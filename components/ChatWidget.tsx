@@ -62,7 +62,7 @@ export const ChatWidget: React.FC<ChatWidgetProps> = ({ lang }) => {
       <button
         onClick={() => setIsOpen(!isOpen)}
         className={`fixed bottom-6 ${lang === 'ar' ? 'left-6' : 'right-6'} z-50 w-14 h-14 rounded-full bg-lexcora-gold text-lexcora-blue shadow-xl flex items-center justify-center hover:bg-yellow-400 hover:scale-110 transition-all duration-300 border-2 border-white/20`}
-        aria-label="Open Chat"
+        aria-label={isOpen ? "Close Chat" : "Open Chat"}
       >
         {isOpen ? <X size={24} /> : <MessageSquare size={24} />}
       </button>
@@ -70,6 +70,8 @@ export const ChatWidget: React.FC<ChatWidgetProps> = ({ lang }) => {
       {/* Chat Window */}
       <div 
         className={`fixed bottom-24 ${lang === 'ar' ? 'left-6' : 'right-6'} z-50 w-full max-w-[360px] md:w-96 bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden transition-all duration-300 origin-bottom ${isOpen ? 'opacity-100 scale-100 translate-y-0' : 'opacity-0 scale-95 translate-y-4 pointer-events-none'}`}
+        role="dialog"
+        aria-label="Chat Support Window"
       >
         {/* Header */}
         <div className="bg-lexcora-blue p-4 flex justify-between items-center text-white">
@@ -85,13 +87,13 @@ export const ChatWidget: React.FC<ChatWidgetProps> = ({ lang }) => {
               </div>
             </div>
           </div>
-          <button onClick={() => setIsOpen(false)} className="text-slate-400 hover:text-white transition-colors">
+          <button onClick={() => setIsOpen(false)} className="text-slate-400 hover:text-white transition-colors" aria-label="Minimize Chat">
             <Minimize2 size={18} />
           </button>
         </div>
 
         {/* Messages Area */}
-        <div className="h-96 bg-slate-50 overflow-y-auto p-4 flex flex-col gap-4">
+        <div className="h-96 bg-slate-50 overflow-y-auto p-4 flex flex-col gap-4" aria-live="polite">
           {messages.map((msg, idx) => (
             <div 
               key={idx} 
@@ -130,11 +132,13 @@ export const ChatWidget: React.FC<ChatWidgetProps> = ({ lang }) => {
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyPress}
               disabled={isLoading}
+              aria-label="Chat message"
             />
             <button 
               onClick={handleSend}
               disabled={isLoading || !input.trim()}
               className="p-3 bg-lexcora-gold text-lexcora-blue rounded-full hover:bg-yellow-400 disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-md"
+              aria-label="Send message"
             >
               <Send size={18} />
             </button>

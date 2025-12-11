@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Language } from '../types';
+import { Language, View } from '../types';
 import { CONTENT } from '../constants';
 import { Button } from './Button';
 import { getLegalAssistantResponse } from '../services/geminiService';
@@ -7,9 +7,10 @@ import { Search, Loader2, Sparkles } from 'lucide-react';
 
 interface InsightsProps {
   lang: Language;
+  onNavigate: (view: View) => void;
 }
 
-export const Insights: React.FC<InsightsProps> = ({ lang }) => {
+export const Insights: React.FC<InsightsProps> = ({ lang, onNavigate }) => {
   const t = CONTENT[lang].insights;
   const [query, setQuery] = useState('');
   const [response, setResponse] = useState('');
@@ -33,7 +34,13 @@ export const Insights: React.FC<InsightsProps> = ({ lang }) => {
             <h2 className="text-4xl font-serif font-bold text-lexcora-blue mb-4">{t.title}</h2>
             <p className="text-lg text-slate-600">{t.subtitle}</p>
           </div>
-          <Button variant="outline">{lang === 'en' ? 'View All Insights' : 'عرض جميع الرؤى'}</Button>
+          <Button 
+            variant="outline" 
+            onClick={() => onNavigate('insights')}
+            aria-label="View all insights articles"
+          >
+            {lang === 'en' ? 'View All Insights' : 'عرض جميع الرؤى'}
+          </Button>
         </div>
 
         <div className="grid lg:grid-cols-3 gap-8">
@@ -41,19 +48,30 @@ export const Insights: React.FC<InsightsProps> = ({ lang }) => {
           {/* Articles */}
           <div className="lg:col-span-2 grid md:grid-cols-2 gap-8">
             {t.articles.map((article, idx) => (
-              <article key={idx} className="bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-md transition-shadow group border border-slate-100">
-                <div className="h-48 overflow-hidden">
+              <article key={idx} className="bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-md transition-shadow group border border-slate-100 flex flex-col">
+                <div className="h-48 overflow-hidden relative cursor-pointer" onClick={() => onNavigate('insights')}>
                   <img src={article.image} alt={article.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                 </div>
-                <div className="p-6">
+                <div className="p-6 flex flex-col flex-1">
                   <div className="flex justify-between items-center mb-3">
                     <span className="text-xs font-bold text-lexcora-gold uppercase tracking-wider">{article.category}</span>
                     <span className="text-xs text-slate-400">{article.date}</span>
                   </div>
-                  <h3 className="font-serif text-xl font-bold text-lexcora-blue mb-2 leading-snug">{article.title}</h3>
-                  <a href="#" className="inline-block mt-2 text-sm font-semibold text-slate-500 hover:text-lexcora-blue underline decoration-lexcora-gold/50">
-                    {lang === 'en' ? 'Read Analysis' : 'اقرأ التحليل'}
-                  </a>
+                  <h3 
+                    className="font-serif text-xl font-bold text-lexcora-blue mb-2 leading-snug cursor-pointer hover:text-lexcora-gold transition-colors"
+                    onClick={() => onNavigate('insights')}
+                  >
+                    {article.title}
+                  </h3>
+                  <div className="mt-auto">
+                    <button 
+                      onClick={() => onNavigate('insights')}
+                      className="inline-block mt-2 text-sm font-semibold text-slate-500 hover:text-lexcora-blue underline decoration-lexcora-gold/50 bg-transparent border-none p-0 cursor-pointer"
+                      aria-label={`Read analysis about ${article.title}`}
+                    >
+                      {lang === 'en' ? 'Read Analysis' : 'اقرأ التحليل'}
+                    </button>
+                  </div>
                 </div>
               </article>
             ))}
@@ -72,7 +90,7 @@ export const Insights: React.FC<InsightsProps> = ({ lang }) => {
                 </div>
 
                 <div className="flex-1 space-y-4">
-                  <div className="bg-white/10 backdrop-blur-sm p-4 rounded-lg border border-white/10 min-h-[120px]">
+                  <div className="bg-white/10 backdrop-blur-sm p-4 rounded-lg border border-white/10 min-h-[120px]" aria-live="polite">
                     {loading ? (
                        <div className="flex items-center justify-center h-full text-lexcora-gold">
                          <Loader2 className="animate-spin mr-2" /> Processing...
@@ -92,11 +110,13 @@ export const Insights: React.FC<InsightsProps> = ({ lang }) => {
                       value={query}
                       onChange={(e) => setQuery(e.target.value)}
                       onKeyDown={(e) => e.key === 'Enter' && handleAsk()}
+                      aria-label="Ask about UAE Labour Law"
                     />
                     <button 
                       onClick={handleAsk}
                       className="absolute top-1/2 -translate-y-1/2 right-2 p-2 bg-lexcora-gold text-lexcora-blue rounded hover:bg-yellow-400 transition-colors"
                       disabled={loading}
+                      aria-label="Submit query"
                     >
                       <Search size={16} />
                     </button>

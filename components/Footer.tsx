@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Language } from '../types';
 import { CONTENT } from '../constants';
-import { Linkedin, Twitter, Facebook, Mail, MapPin, Phone } from 'lucide-react';
+import { Linkedin, Twitter, Facebook, Mail, MapPin, Phone, Send, CheckCircle2 } from 'lucide-react';
 
 interface FooterProps {
   lang: Language;
@@ -9,10 +9,58 @@ interface FooterProps {
 
 export const Footer: React.FC<FooterProps> = ({ lang }) => {
   const t = CONTENT[lang].footer;
+  const [email, setEmail] = useState('');
+  const [subscribed, setSubscribed] = useState(false);
+
+  const handleSubscribe = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (email) {
+      // Mock subscription logic
+      setSubscribed(true);
+      setEmail('');
+      setTimeout(() => setSubscribed(false), 3000);
+    }
+  };
 
   return (
-    <footer id="footer" className="bg-lexcora-blue text-slate-300 pt-20 pb-10 border-t-4 border-lexcora-gold">
+    <footer id="footer" className="bg-lexcora-blue text-slate-300 pt-16 pb-10 border-t-4 border-lexcora-gold">
       <div className="container mx-auto px-6">
+        
+        {/* Newsletter Section */}
+        <div className="bg-white/5 rounded-2xl p-8 mb-16 border border-white/10 flex flex-col lg:flex-row items-center justify-between gap-8">
+          <div className="lg:w-1/2">
+            <h3 className="text-2xl font-serif font-bold text-white mb-2">{t.newsletter.title}</h3>
+            <p className="text-slate-400">{t.newsletter.description}</p>
+          </div>
+          <div className="lg:w-1/2 w-full max-w-md">
+            {subscribed ? (
+              <div className="flex items-center gap-2 text-green-400 bg-green-500/10 p-4 rounded-lg border border-green-500/20 animate-fade-in" role="alert">
+                <CheckCircle2 size={20} />
+                <span className="font-semibold">{t.newsletter.success}</span>
+              </div>
+            ) : (
+              <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row gap-3">
+                <input 
+                  type="email" 
+                  placeholder={t.newsletter.placeholder}
+                  className="flex-1 bg-slate-900/50 border border-slate-700 text-white rounded-lg px-4 py-3 focus:outline-none focus:border-lexcora-gold transition-colors"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  aria-label={t.newsletter.placeholder}
+                />
+                <button 
+                  type="submit" 
+                  className="bg-lexcora-gold text-lexcora-blue font-bold px-6 py-3 rounded-lg hover:bg-yellow-400 transition-colors flex items-center justify-center gap-2 whitespace-nowrap"
+                  aria-label={t.newsletter.button}
+                >
+                  {t.newsletter.button} <Send size={18} />
+                </button>
+              </form>
+            )}
+          </div>
+        </div>
+
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
           
           {/* Brand */}
@@ -20,9 +68,9 @@ export const Footer: React.FC<FooterProps> = ({ lang }) => {
             <h2 className="text-3xl font-serif font-bold text-white tracking-wider">LEXCORA</h2>
             <p className="text-sm leading-relaxed text-slate-400">{t.about}</p>
             <div className="flex gap-4">
-              <a href="#" className="hover:text-lexcora-gold transition-colors"><Linkedin size={20} /></a>
-              <a href="#" className="hover:text-lexcora-gold transition-colors"><Twitter size={20} /></a>
-              <a href="#" className="hover:text-lexcora-gold transition-colors"><Facebook size={20} /></a>
+              <a href="#" className="hover:text-lexcora-gold transition-colors" aria-label="LinkedIn"><Linkedin size={20} /></a>
+              <a href="#" className="hover:text-lexcora-gold transition-colors" aria-label="Twitter"><Twitter size={20} /></a>
+              <a href="#" className="hover:text-lexcora-gold transition-colors" aria-label="Facebook"><Facebook size={20} /></a>
             </div>
           </div>
 
@@ -31,15 +79,15 @@ export const Footer: React.FC<FooterProps> = ({ lang }) => {
             <h3 className="text-white font-bold mb-6">{t.contact}</h3>
             <ul className="space-y-4 text-sm">
               <li className="flex gap-3">
-                <MapPin size={18} className="text-lexcora-gold shrink-0" />
+                <MapPin size={18} className="text-lexcora-gold shrink-0" aria-hidden="true" />
                 <span>{t.address}</span>
               </li>
               <li className="flex gap-3">
-                <Mail size={18} className="text-lexcora-gold shrink-0" />
+                <Mail size={18} className="text-lexcora-gold shrink-0" aria-hidden="true" />
                 <span>contact@lexcora.ae</span>
               </li>
               <li className="flex gap-3">
-                <Phone size={18} className="text-lexcora-gold shrink-0" />
+                <Phone size={18} className="text-lexcora-gold shrink-0" aria-hidden="true" />
                 <span>+971 4 123 4567</span>
               </li>
             </ul>

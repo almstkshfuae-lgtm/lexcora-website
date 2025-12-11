@@ -2,7 +2,7 @@ import React from 'react';
 import { Language } from '../types';
 import { CONTENT } from '../constants';
 import { Button } from './Button';
-import { ArrowRight, ArrowLeft, CheckCircle } from 'lucide-react';
+import { ArrowRight, ArrowLeft, CheckCircle, Phone } from 'lucide-react';
 
 interface HeroProps {
   lang: Language;
@@ -53,7 +53,12 @@ export const Hero: React.FC<HeroProps> = ({ lang }) => {
             <Button variant="primary" className="shadow-xl shadow-lexcora-gold/20">
               {t.ctaPrimary}
             </Button>
+            
             <Button variant="secondary">
+              <Phone size={18} /> {t.ctaCallback}
+            </Button>
+
+            <Button variant="outline">
               {t.ctaSecondary} <Arrow size={18} />
             </Button>
           </div>

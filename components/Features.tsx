@@ -12,27 +12,35 @@ const FeatureBlock: React.FC<{ section: FeatureSection; index: number }> = ({ se
 
   return (
     <div className={`p-8 rounded-2xl transition-all duration-300 border ${isOpen ? 'bg-white border-lexcora-gold/30 shadow-xl' : 'bg-slate-50 border-transparent hover:bg-white'}`}>
-      <div 
-        className="flex justify-between items-start cursor-pointer"
+      <button 
+        className="w-full flex justify-between items-start cursor-pointer text-left focus:outline-none"
         onClick={() => setIsOpen(!isOpen)}
+        aria-expanded={isOpen}
+        aria-controls={`feature-content-${index}`}
+        id={`feature-header-${index}`}
       >
         <div>
           <h3 className="text-2xl font-serif font-bold text-lexcora-blue mb-2">{section.title}</h3>
           <p className="text-slate-500">{section.subtitle}</p>
         </div>
-        <button className="text-lexcora-gold mt-1">
+        <span className="text-lexcora-gold mt-1">
           {isOpen ? <ChevronUp /> : <ChevronDown />}
-        </button>
-      </div>
+        </span>
+      </button>
 
       {isOpen && (
-        <div className="mt-8 grid md:grid-cols-3 gap-6 animate-fade-in">
+        <div 
+          id={`feature-content-${index}`}
+          role="region"
+          aria-labelledby={`feature-header-${index}`}
+          className="mt-8 grid md:grid-cols-3 gap-6 animate-fade-in"
+        >
           {section.items.map((item, idx) => {
             const Icon = item.icon;
             return (
-              <div key={idx} className="bg-slate-50 p-5 rounded-lg border border-slate-100 hover:border-lexcora-gold/50 transition-colors group">
-                <div className="w-12 h-12 bg-lexcora-blue text-lexcora-gold rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                  <Icon size={24} />
+              <div key={idx} className="bg-slate-50 p-5 rounded-lg border border-slate-100 hover:border-lexcora-gold/50 transition-colors duration-300 group hover:bg-white hover:shadow-sm">
+                <div className="w-12 h-12 bg-lexcora-blue text-lexcora-gold rounded-lg flex items-center justify-center mb-4 transition-all duration-300 ease-out group-hover:scale-110 group-hover:bg-lexcora-gold group-hover:text-lexcora-blue group-hover:shadow-lg group-hover:shadow-lexcora-gold/20">
+                  <Icon size={24} className="transition-transform duration-300 group-hover:rotate-3" />
                 </div>
                 <h4 className="font-semibold text-lg text-lexcora-blue mb-2">{item.title}</h4>
                 <p className="text-sm text-slate-600 leading-relaxed">{item.description}</p>
