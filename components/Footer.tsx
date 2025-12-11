@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
-import { Language } from '../types';
+import { Language, View } from '../types';
 import { CONTENT } from '../constants';
 import { Linkedin, Twitter, Facebook, Mail, MapPin, Phone, Send, CheckCircle2 } from 'lucide-react';
 
 interface FooterProps {
   lang: Language;
+  onNavigate: (view: View, sectionId?: string) => void;
 }
 
-export const Footer: React.FC<FooterProps> = ({ lang }) => {
+export const Footer: React.FC<FooterProps> = ({ lang, onNavigate }) => {
   const t = CONTENT[lang].footer;
   const [email, setEmail] = useState('');
   const [subscribed, setSubscribed] = useState(false);
@@ -20,6 +21,11 @@ export const Footer: React.FC<FooterProps> = ({ lang }) => {
       setEmail('');
       setTimeout(() => setSubscribed(false), 3000);
     }
+  };
+
+  const handleLinkClick = (e: React.MouseEvent, view: View, sectionId?: string) => {
+    e.preventDefault();
+    onNavigate(view, sectionId);
   };
 
   return (
@@ -84,11 +90,11 @@ export const Footer: React.FC<FooterProps> = ({ lang }) => {
               </li>
               <li className="flex gap-3">
                 <Mail size={18} className="text-lexcora-gold shrink-0" aria-hidden="true" />
-                <span>contact@lexcora.ae</span>
+                <span>rased@almstkshf.com</span>
               </li>
               <li className="flex gap-3">
                 <Phone size={18} className="text-lexcora-gold shrink-0" aria-hidden="true" />
-                <span>+971 4 123 4567</span>
+                <span dir="ltr">+971 58 595 2035</span>
               </li>
             </ul>
           </div>
@@ -97,10 +103,26 @@ export const Footer: React.FC<FooterProps> = ({ lang }) => {
           <div>
             <h3 className="text-white font-bold mb-6">Product</h3>
             <ul className="space-y-3 text-sm">
-              <li><a href="#" className="hover:text-white transition-colors">Case Management</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Client Portal</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Security & Governance</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Pricing</a></li>
+              <li>
+                <button onClick={(e) => handleLinkClick(e, 'home', 'features-productivity')} className="hover:text-white transition-colors text-left">
+                  Case Management
+                </button>
+              </li>
+              <li>
+                <button onClick={(e) => handleLinkClick(e, 'home', 'features-client')} className="hover:text-white transition-colors text-left">
+                  Client Portal
+                </button>
+              </li>
+              <li>
+                 <button onClick={(e) => handleLinkClick(e, 'home', 'features-governance')} className="hover:text-white transition-colors text-left">
+                  Security & Governance
+                </button>
+              </li>
+              <li>
+                <button onClick={(e) => handleLinkClick(e, 'pricing')} className="hover:text-white transition-colors text-left">
+                  Pricing
+                </button>
+              </li>
             </ul>
           </div>
 
@@ -108,7 +130,11 @@ export const Footer: React.FC<FooterProps> = ({ lang }) => {
            <div>
             <h3 className="text-white font-bold mb-6">Legal</h3>
             <ul className="space-y-3 text-sm">
-              <li><a href="#" className="hover:text-white transition-colors">{t.privacy}</a></li>
+              <li>
+                <button onClick={(e) => handleLinkClick(e, 'privacy')} className="hover:text-white transition-colors text-left">
+                  {t.privacy}
+                </button>
+              </li>
               <li><a href="#" className="hover:text-white transition-colors">{t.compliance}</a></li>
               <li><a href="#" className="hover:text-white transition-colors">Terms of Service</a></li>
             </ul>

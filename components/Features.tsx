@@ -7,11 +7,11 @@ interface FeaturesProps {
   lang: Language;
 }
 
-const FeatureBlock: React.FC<{ section: FeatureSection; index: number }> = ({ section, index }) => {
+const FeatureBlock: React.FC<{ section: FeatureSection; index: number; id?: string }> = ({ section, index, id }) => {
   const [isOpen, setIsOpen] = useState(true);
 
   return (
-    <div className={`p-8 rounded-2xl transition-all duration-300 border ${isOpen ? 'bg-white border-lexcora-gold/30 shadow-xl' : 'bg-slate-50 border-transparent hover:bg-white'}`}>
+    <div id={id} className={`p-8 rounded-2xl transition-all duration-300 border ${isOpen ? 'bg-white border-lexcora-gold/30 shadow-xl' : 'bg-slate-50 border-transparent hover:bg-white'}`}>
       <button 
         className="w-full flex justify-between items-start cursor-pointer text-left focus:outline-none"
         onClick={() => setIsOpen(!isOpen)}
@@ -57,11 +57,11 @@ export const Features: React.FC<FeaturesProps> = ({ lang }) => {
   const t = CONTENT[lang].features;
 
   const featureList = [
-    t.productivity,
-    t.client,
-    t.governance,
-    t.intelligence,
-    t.integration
+    { data: t.productivity, id: 'features-productivity' },
+    { data: t.client, id: 'features-client' },
+    { data: t.governance, id: 'features-governance' },
+    { data: t.intelligence, id: 'features-intelligence' },
+    { data: t.integration, id: 'features-integration' }
   ];
 
   return (
@@ -74,8 +74,8 @@ export const Features: React.FC<FeaturesProps> = ({ lang }) => {
         </div>
 
         <div className="space-y-8">
-          {featureList.map((section, idx) => (
-            <FeatureBlock key={idx} section={section} index={idx} />
+          {featureList.map((item, idx) => (
+            <FeatureBlock key={idx} section={item.data} index={idx} id={item.id} />
           ))}
         </div>
       </div>

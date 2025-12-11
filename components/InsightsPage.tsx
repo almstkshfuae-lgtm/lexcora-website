@@ -6,14 +6,21 @@ import { Button } from './Button';
 
 interface InsightsPageProps {
   lang: Language;
+  onArticleClick?: (id: string) => void;
 }
 
-export const InsightsPage: React.FC<InsightsPageProps> = ({ lang }) => {
+export const InsightsPage: React.FC<InsightsPageProps> = ({ lang, onArticleClick }) => {
   const t = CONTENT[lang].insightsPage;
   const [activeCategory, setActiveCategory] = useState(t.categories[0]);
   const [searchQuery, setSearchQuery] = useState('');
 
   const Arrow = lang === 'ar' ? ArrowLeft : ArrowRight;
+
+  const handleReadMore = (id: string) => {
+    if (onArticleClick) {
+      onArticleClick(id);
+    }
+  };
 
   // Filter Logic
   const filteredArticles = t.items.filter((article: InsightArticle) => {
@@ -91,7 +98,10 @@ export const InsightsPage: React.FC<InsightsPageProps> = ({ lang }) => {
                 style={{ animationDelay: `${400 + (idx * 100)}ms` }}
               >
                 {/* Image */}
-                <div className="h-48 overflow-hidden relative">
+                <div 
+                  className="h-48 overflow-hidden relative cursor-pointer"
+                  onClick={() => handleReadMore(article.id)}
+                >
                    <div className="absolute inset-0 bg-lexcora-blue/10 group-hover:bg-transparent transition-colors z-10"></div>
                    <img 
                     src={article.image} 
@@ -111,7 +121,10 @@ export const InsightsPage: React.FC<InsightsPageProps> = ({ lang }) => {
                     <span className="flex items-center gap-1"><Clock size={12} /> {article.readTime}</span>
                   </div>
 
-                  <h3 className="font-serif text-xl font-bold text-lexcora-blue mb-3 leading-snug group-hover:text-lexcora-gold transition-colors">
+                  <h3 
+                    className="font-serif text-xl font-bold text-lexcora-blue mb-3 leading-snug group-hover:text-lexcora-gold transition-colors cursor-pointer"
+                    onClick={() => handleReadMore(article.id)}
+                  >
                     {article.title}
                   </h3>
                   
@@ -132,9 +145,12 @@ export const InsightsPage: React.FC<InsightsPageProps> = ({ lang }) => {
                     <div className="text-xs font-semibold text-slate-500">
                       By <span className="text-lexcora-blue">{article.author}</span>
                     </div>
-                    <a href="#" className="text-sm font-bold text-lexcora-gold hover:text-yellow-500 flex items-center gap-1 transition-colors">
+                    <button 
+                      onClick={() => handleReadMore(article.id)}
+                      className="text-sm font-bold text-lexcora-gold hover:text-yellow-500 flex items-center gap-1 transition-colors"
+                    >
                       {t.readMore} <Arrow size={16} />
-                    </a>
+                    </button>
                   </div>
                 </div>
               </article>

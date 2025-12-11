@@ -10,11 +10,15 @@ import { Testimonials } from './components/Testimonials';
 import { CaseStudies } from './components/CaseStudies';
 import { TrialSignup } from './components/TrialSignup';
 import { InsightsPage } from './components/InsightsPage';
+import { ArticleDetail } from './components/ArticleDetail';
+import { Pricing } from './components/Pricing';
+import { PrivacyPolicy } from './components/PrivacyPolicy';
 import { Language, View } from './types';
 
 function App() {
   const [lang, setLang] = useState<Language>('en');
   const [currentView, setCurrentView] = useState<View>('home');
+  const [selectedArticleId, setSelectedArticleId] = useState<string | null>(null);
   const [loginOpen, setLoginOpen] = useState(false);
 
   useEffect(() => {
@@ -35,6 +39,10 @@ function App() {
   // Handle scrolling when navigation occurs
   const handleNavigate = (view: View, sectionId?: string) => {
     setCurrentView(view);
+    // If navigating away from article, clear selection (optional, but good for cleanliness)
+    if (view !== 'article') {
+      setSelectedArticleId(null);
+    }
     
     // Defer scrolling to next tick to ensure render updates
     setTimeout(() => {
@@ -47,6 +55,12 @@ function App() {
         window.scrollTo({ top: 0, behavior: 'smooth' });
       }
     }, 100);
+  };
+
+  const handleArticleClick = (articleId: string) => {
+    setSelectedArticleId(articleId);
+    setCurrentView('article');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (
@@ -62,24 +76,37 @@ function App() {
       <main>
         {currentView === 'home' && (
           <>
-            <Hero lang={lang} />
+            <Hero lang={lang} onNavigate={handleNavigate} />
             <Features lang={lang} />
             <Testimonials lang={lang} />
-            <Insights lang={lang} onNavigate={handleNavigate} />
+            <Insights lang={lang} onNavigate={handleNavigate} onArticleClick={handleArticleClick} />
           </>
         )}
         {currentView === 'case-studies' && (
-          <CaseStudies lang={lang} />
+          <CaseStudies lang={lang} onNavigate={handleNavigate} />
         )}
         {currentView === 'trial' && (
           <TrialSignup lang={lang} />
         )}
+        {currentView === 'pricing' && (
+          <Pricing lang={lang} onNavigate={handleNavigate} />
+        )}
+        {currentView === 'privacy' && (
+          <PrivacyPolicy lang={lang} onNavigate={handleNavigate} />
+        )}
         {currentView === 'insights' && (
-          <InsightsPage lang={lang} />
+          <InsightsPage lang={lang} onArticleClick={handleArticleClick} />
+        )}
+        {currentView === 'article' && selectedArticleId && (
+          <ArticleDetail 
+            lang={lang} 
+            articleId={selectedArticleId} 
+            onBack={() => handleNavigate('insights')}
+          />
         )}
       </main>
 
-      <Footer lang={lang} />
+      <Footer lang={lang} onNavigate={handleNavigate} />
       
       <LoginModal isOpen={loginOpen} onClose={() => setLoginOpen(false)} lang={lang} />
       <ChatWidget lang={lang} />

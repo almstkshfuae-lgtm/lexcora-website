@@ -1,14 +1,15 @@
 import React from 'react';
-import { Language } from '../types';
+import { Language, View } from '../types';
 import { CONTENT } from '../constants';
 import { ArrowRight, ArrowLeft, Trophy, Target, CheckCircle } from 'lucide-react';
 import { Button } from './Button';
 
 interface CaseStudiesProps {
   lang: Language;
+  onNavigate: (view: View, sectionId?: string) => void;
 }
 
-export const CaseStudies: React.FC<CaseStudiesProps> = ({ lang }) => {
+export const CaseStudies: React.FC<CaseStudiesProps> = ({ lang, onNavigate }) => {
   const t = CONTENT[lang].caseStudies;
   const Arrow = lang === 'ar' ? ArrowLeft : ArrowRight;
 
@@ -103,7 +104,12 @@ export const CaseStudies: React.FC<CaseStudiesProps> = ({ lang }) => {
            <div className="relative z-10">
              <Trophy size={48} className="text-lexcora-gold mx-auto mb-6" />
              <h2 className="text-3xl md:text-4xl font-serif font-bold mb-6">{t.ctaTitle}</h2>
-             <Button variant="primary" className="mx-auto" aria-label={t.ctaButton}>
+             <Button 
+               variant="primary" 
+               className="mx-auto" 
+               aria-label={t.ctaButton}
+               onClick={() => onNavigate('case-studies', 'footer')}
+             >
                {t.ctaButton} <Arrow size={18} />
              </Button>
            </div>

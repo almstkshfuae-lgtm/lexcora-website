@@ -1,7 +1,7 @@
 import { LucideIcon } from 'lucide-react';
 
 export type Language = 'en' | 'ar';
-export type View = 'home' | 'case-studies' | 'trial' | 'insights';
+export type View = 'home' | 'case-studies' | 'trial' | 'insights' | 'article' | 'pricing' | 'privacy';
 
 export interface NavItem {
   label: string;
@@ -53,6 +53,24 @@ export interface InsightArticle {
   readTime: string;
   image: string;
   tags: string[];
+  content: string[]; // Array of paragraphs for full content
+}
+
+export interface PricingTier {
+  name: string;
+  stars: number;
+  priceMonthly: string;
+  priceAnnually: string;
+  periodLabel: string; // e.g. "/user/month"
+  features: string[];
+  minUsers: string;
+  highlight?: boolean;
+  cta: string;
+}
+
+export interface PrivacyPolicySection {
+  heading: string;
+  content: string[];
 }
 
 export interface ContentDictionary {
@@ -65,6 +83,7 @@ export interface ContentDictionary {
     portal: string;
     demo: string;
     freeTrial: string;
+    pricing: string;
   };
   hero: {
     title: string;
@@ -132,6 +151,7 @@ export interface ContentDictionary {
     demoButton: string;
     // Homepage summary articles
     articles: Array<{
+      id: string;
       category: string;
       title: string;
       date: string;
@@ -144,7 +164,44 @@ export interface ContentDictionary {
     searchPlaceholder: string;
     categories: string[];
     readMore: string;
+    backButton: string;
     items: InsightArticle[];
+  };
+  pricing: {
+    pageTitle: string;
+    pageSubtitle: string;
+    toggleMonthly: string;
+    toggleAnnual: string;
+    saveLabel: string;
+    tiers: {
+      starter: PricingTier;
+      professional: PricingTier;
+      enterprise: PricingTier;
+    };
+    discounts: {
+      title: string;
+      subtitle: string;
+      tableHeadUser: string;
+      tableHeadDiscount: string;
+      items: { range: string; discount: string }[];
+      note: string;
+    };
+    referral: {
+      title: string;
+      item1: string;
+      item2: string;
+    };
+  };
+  privacyPolicy: {
+    title: string;
+    lastUpdated: string;
+    intro: string;
+    sections: PrivacyPolicySection[];
+    contact: {
+      heading: string;
+      text: string;
+      email: string;
+    };
   };
   chatbot: {
     title: string;

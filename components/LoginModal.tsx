@@ -28,7 +28,11 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, lang })
         {/* Body */}
         <div className="p-8 space-y-6">
           <div className="space-y-4">
-            <button className="w-full flex items-center justify-between p-4 border border-slate-200 rounded hover:border-lexcora-gold hover:bg-slate-50 transition-all group" aria-label="Login as Attorney or Staff">
+            <a 
+              href="https://lexcora-mbh.com/login"
+              className="w-full flex items-center justify-between p-4 border border-slate-200 rounded hover:border-lexcora-gold hover:bg-slate-50 transition-all group" 
+              aria-label="Login as Attorney or Staff"
+            >
               <div className="flex items-center gap-3">
                 <div className="bg-slate-100 p-2 rounded group-hover:bg-lexcora-gold/20 group-hover:text-lexcora-blue">
                    <Briefcase size={20} />
@@ -39,9 +43,13 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, lang })
                 </div>
               </div>
               <Lock size={16} className="text-slate-300 group-hover:text-lexcora-gold" />
-            </button>
+            </a>
 
-            <button className="w-full flex items-center justify-between p-4 border border-slate-200 rounded hover:border-lexcora-gold hover:bg-slate-50 transition-all group" aria-label="Login to Client Portal">
+            <a 
+              href="https://client.lexcora-mbh.com/login" 
+              className="w-full flex items-center justify-between p-4 border border-slate-200 rounded hover:border-lexcora-gold hover:bg-slate-50 transition-all group" 
+              aria-label="Login to Client Portal"
+            >
               <div className="flex items-center gap-3">
                 <div className="bg-slate-100 p-2 rounded group-hover:bg-lexcora-gold/20 group-hover:text-lexcora-blue">
                    <User size={20} />
@@ -52,7 +60,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, lang })
                 </div>
               </div>
               <Lock size={16} className="text-slate-300 group-hover:text-lexcora-gold" />
-            </button>
+            </a>
           </div>
 
           <div className="text-center text-xs text-slate-400 mt-6">

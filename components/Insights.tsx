@@ -8,9 +8,10 @@ import { Search, Loader2, Sparkles } from 'lucide-react';
 interface InsightsProps {
   lang: Language;
   onNavigate: (view: View) => void;
+  onArticleClick?: (id: string) => void;
 }
 
-export const Insights: React.FC<InsightsProps> = ({ lang, onNavigate }) => {
+export const Insights: React.FC<InsightsProps> = ({ lang, onNavigate, onArticleClick }) => {
   const t = CONTENT[lang].insights;
   const [query, setQuery] = useState('');
   const [response, setResponse] = useState('');
@@ -22,6 +23,14 @@ export const Insights: React.FC<InsightsProps> = ({ lang, onNavigate }) => {
     const res = await getLegalAssistantResponse(query, lang);
     setResponse(res);
     setLoading(false);
+  };
+
+  const handleArticleClick = (id: string) => {
+    if (onArticleClick) {
+      onArticleClick(id);
+    } else {
+      onNavigate('insights');
+    }
   };
 
   return (
@@ -49,7 +58,10 @@ export const Insights: React.FC<InsightsProps> = ({ lang, onNavigate }) => {
           <div className="lg:col-span-2 grid md:grid-cols-2 gap-8">
             {t.articles.map((article, idx) => (
               <article key={idx} className="bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-md transition-shadow group border border-slate-100 flex flex-col">
-                <div className="h-48 overflow-hidden relative cursor-pointer" onClick={() => onNavigate('insights')}>
+                <div 
+                  className="h-48 overflow-hidden relative cursor-pointer" 
+                  onClick={() => handleArticleClick(article.id)}
+                >
                   <img src={article.image} alt={article.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                 </div>
                 <div className="p-6 flex flex-col flex-1">
@@ -59,13 +71,13 @@ export const Insights: React.FC<InsightsProps> = ({ lang, onNavigate }) => {
                   </div>
                   <h3 
                     className="font-serif text-xl font-bold text-lexcora-blue mb-2 leading-snug cursor-pointer hover:text-lexcora-gold transition-colors"
-                    onClick={() => onNavigate('insights')}
+                    onClick={() => handleArticleClick(article.id)}
                   >
                     {article.title}
                   </h3>
                   <div className="mt-auto">
                     <button 
-                      onClick={() => onNavigate('insights')}
+                      onClick={() => handleArticleClick(article.id)}
                       className="inline-block mt-2 text-sm font-semibold text-slate-500 hover:text-lexcora-blue underline decoration-lexcora-gold/50 bg-transparent border-none p-0 cursor-pointer"
                       aria-label={`Read analysis about ${article.title}`}
                     >

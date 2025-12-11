@@ -38,6 +38,7 @@ export const Header: React.FC<HeaderProps> = ({ lang, setLang, onLoginClick, cur
     { label: t.home, view: 'home' as const, sectionId: undefined },
     { label: t.features, view: 'home' as const, sectionId: 'features' },
     { label: t.caseStudies, view: 'case-studies' as const, sectionId: undefined },
+    { label: t.pricing, view: 'pricing' as const, sectionId: undefined },
     { label: t.insights, view: 'insights' as const, sectionId: undefined },
   ];
 

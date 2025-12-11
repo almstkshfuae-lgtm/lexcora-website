@@ -1,14 +1,15 @@
 import React from 'react';
-import { Language } from '../types';
+import { Language, View } from '../types';
 import { CONTENT } from '../constants';
 import { Button } from './Button';
 import { ArrowRight, ArrowLeft, CheckCircle, Phone } from 'lucide-react';
 
 interface HeroProps {
   lang: Language;
+  onNavigate: (view: View, sectionId?: string) => void;
 }
 
-export const Hero: React.FC<HeroProps> = ({ lang }) => {
+export const Hero: React.FC<HeroProps> = ({ lang, onNavigate }) => {
   const t = CONTENT[lang].hero;
   const Arrow = lang === 'ar' ? ArrowLeft : ArrowRight;
 
@@ -50,15 +51,25 @@ export const Hero: React.FC<HeroProps> = ({ lang }) => {
             className="flex flex-col sm:flex-row gap-4 opacity-0 animate-fade-in-up"
             style={{ animationDelay: '400ms' }}
           >
-            <Button variant="primary" className="shadow-xl shadow-lexcora-gold/20">
+            <Button 
+              variant="primary" 
+              className="shadow-xl shadow-lexcora-gold/20"
+              onClick={() => onNavigate('trial')}
+            >
               {t.ctaPrimary}
             </Button>
             
-            <Button variant="secondary">
+            <Button 
+              variant="secondary"
+              onClick={() => onNavigate('home', 'footer')}
+            >
               <Phone size={18} /> {t.ctaCallback}
             </Button>
 
-            <Button variant="outline">
+            <Button 
+              variant="outline"
+              onClick={() => onNavigate('home', 'features')}
+            >
               {t.ctaSecondary} <Arrow size={18} />
             </Button>
           </div>
